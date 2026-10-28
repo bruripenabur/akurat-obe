@@ -1,0 +1,37 @@
+{
+  "entities": {
+    "Curriculum": {
+      "title": "Curriculum",
+      "description": "Curriculum data model for study programs",
+      "type": "object",
+      "properties": {
+        "prodiKode": { "type": "string", "maxLength": 32 },
+        "tahunKurikulum": { "type": "string", "maxLength": 10 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["prodiKode", "tahunKurikulum"]
+    },
+    "MataKuliah": {
+      "title": "MataKuliah",
+      "description": "Course definition",
+      "type": "object",
+      "properties": {
+        "kode": { "type": "string", "maxLength": 32 },
+        "nama": { "type": "string", "maxLength": 128 },
+        "semester": { "type": "number" },
+        "totalSks": { "type": "number" }
+      },
+      "required": ["kode", "nama", "semester", "totalSks"]
+    }
+  },
+  "firestore": {
+    "/curriculums/{curriculumId}": {
+      "schema": { "$ref": "#/entities/Curriculum" },
+      "description": "Centralized curriculum storage per prodi"
+    },
+    "/curriculums/{curriculumId}/mataKuliah/{mkId}": {
+      "schema": { "$ref": "#/entities/MataKuliah" },
+      "description": "Courses under curriculum"
+    }
+  }
+}

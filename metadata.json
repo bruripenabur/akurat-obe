@@ -1,0 +1,6 @@
+{
+  "name": "AKURAT - OBE Universitas Pattimura",
+  "description": "Aplikasi Kurikulum Berbasis Outcome-Based Education (OBE) terintegrasi untuk 117 Program Studi Universitas Pattimura.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
