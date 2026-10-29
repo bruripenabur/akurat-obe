@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CurriculumData, Prodi } from '../types';
 import { Sparkles, Plus, Trash2, Edit3, GraduationCap, Award, BookOpen, Layers } from 'lucide-react';
 import { AiAssistantModal } from './AiAssistantModal';
@@ -16,9 +16,16 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
   activeProdi,
   activeSubTab = 'profil_lulusan',
 }) => {
-  const [tab, setTab] = useState<'po' | 'cpl' | 'bk' | 'mk'>(
+  const [tab, setTab] = useState<string>(
     activeSubTab === 'cpl_rumusan' ? 'cpl' : activeSubTab === 'bahan_kajian' ? 'bk' : activeSubTab === 'pembentukan_mk' ? 'mk' : 'po'
   );
+
+  useEffect(() => {
+    if (activeSubTab === 'cpl_rumusan') setTab('cpl');
+    else if (activeSubTab === 'bahan_kajian') setTab('bk');
+    else if (activeSubTab === 'pembentukan_mk') setTab('mk');
+    else if (activeSubTab === 'profil_lulusan') setTab('po');
+  }, [activeSubTab]);
 
   const [aiModalOpen, setAiModalOpen] = useState(false);
   const [aiPrompt, setAiPrompt] = useState('');
@@ -67,7 +74,7 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
         <button
           onClick={() => setTab('po')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
-            tab === 'po' ? 'bg-emerald-700 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100'
+            tab === 'po' ? 'bg-blue-800 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100'
           }`}
         >
           <GraduationCap className="w-4 h-4" />
@@ -76,7 +83,7 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
         <button
           onClick={() => setTab('cpl')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
-            tab === 'cpl' ? 'bg-emerald-700 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100'
+            tab === 'cpl' ? 'bg-blue-800 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100'
           }`}
         >
           <Award className="w-4 h-4" />
@@ -85,7 +92,7 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
         <button
           onClick={() => setTab('bk')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
-            tab === 'bk' ? 'bg-emerald-700 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100'
+            tab === 'bk' ? 'bg-blue-800 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100'
           }`}
         >
           <BookOpen className="w-4 h-4" />
@@ -94,7 +101,7 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
         <button
           onClick={() => setTab('mk')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 ${
-            tab === 'mk' ? 'bg-emerald-700 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100'
+            tab === 'mk' ? 'bg-blue-800 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100'
           }`}
         >
           <Layers className="w-4 h-4" />
@@ -113,7 +120,7 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
                   setAiPrompt(`Berikan 3 opsi Profil Lulusan (PO) beserta deskripsi dan okupasi profesi untuk Program Studi ${activeProdi.nama} Universitas Pattimura.`);
                   setAiModalOpen(true);
                 }}
-                className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-medium flex items-center gap-1.5 shadow-xs"
+                className="px-3 py-1.5 bg-blue-800 hover:bg-blue-900 text-white rounded-xl text-xs font-medium flex items-center gap-1.5 shadow-xs"
               >
                 <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
                 <span>Generate dengan AI</span>
@@ -145,18 +152,17 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
             </div>
             <button
               onClick={handleAddPo}
-              className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-2"
+              className="px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-2"
             >
               <Plus className="w-4 h-4" />
               <span>Tambah Profil Lulusan</span>
             </button>
           </div>
 
-          {/* Table */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-emerald-900 text-white text-xs">
+                <tr className="bg-blue-900 text-white text-xs">
                   <th className="p-3.5">Kode</th>
                   <th className="p-3.5">Profil Lulusan</th>
                   <th className="p-3.5">Deskripsi</th>
@@ -167,7 +173,7 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
               <tbody className="divide-y divide-gray-200 text-xs">
                 {curriculum.profilLulusan.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-50">
-                    <td className="p-3.5 font-mono font-bold text-emerald-800">{item.kode}</td>
+                    <td className="p-3.5 font-mono font-bold text-blue-800">{item.kode}</td>
                     <td className="p-3.5 font-bold text-gray-900">{item.profil}</td>
                     <td className="p-3.5 text-gray-600">{item.deskripsi}</td>
                     <td className="p-3.5 text-gray-800 font-medium">{item.profesi}</td>
@@ -184,6 +190,58 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {tab === 'cpl' && (
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+          <h3 className="text-base font-bold text-gray-900">Capaian Pembelajaran Lulusan (CPL)</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse border border-gray-200 text-xs">
+              <thead>
+                <tr className="bg-blue-900 text-white">
+                  <th className="p-3 border">Kode</th>
+                  <th className="p-3 border">Domain</th>
+                  <th className="p-3 border">Deskripsi CPL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {curriculum.cpl.map((c) => (
+                  <tr key={c.id} className="hover:bg-gray-50">
+                    <td className="p-3 border font-mono font-bold text-blue-800">{c.kode}</td>
+                    <td className="p-3 border font-bold text-gray-700">{c.domain}</td>
+                    <td className="p-3 border text-gray-800">{c.deskripsi}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {tab === 'bk' && (
+        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+          <h3 className="text-base font-bold text-gray-900">Bahan Kajian & Deskripsinya</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse border border-gray-200 text-xs">
+              <thead>
+                <tr className="bg-blue-900 text-white">
+                  <th className="p-3 border">Kode</th>
+                  <th className="p-3 border">Nama Bahan Kajian</th>
+                  <th className="p-3 border">Deskripsi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {curriculum.bahanKajian.map((bk) => (
+                  <tr key={bk.id} className="hover:bg-gray-50">
+                    <td className="p-3 border font-mono font-bold text-blue-800">{bk.kode}</td>
+                    <td className="p-3 border font-bold text-gray-900">{bk.nama}</td>
+                    <td className="p-3 border text-gray-700">{bk.deskripsi}</td>
                   </tr>
                 ))}
               </tbody>
@@ -249,7 +307,7 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
             </div>
             <button
               onClick={handleAddMk}
-              className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-2"
+              className="px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-2"
             >
               <Plus className="w-4 h-4" />
               <span>Simpan Mata Kuliah Baru</span>
@@ -259,7 +317,7 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-emerald-900 text-white text-xs">
+                <tr className="bg-blue-900 text-white text-xs">
                   <th className="p-3.5">Kode</th>
                   <th className="p-3.5">Nama Mata Kuliah</th>
                   <th className="p-3.5">Kelompok</th>
@@ -273,13 +331,13 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
               <tbody className="divide-y divide-gray-200 text-xs">
                 {curriculum.mataKuliah.map((mk) => (
                   <tr key={mk.id} className="hover:bg-gray-50">
-                    <td className="p-3.5 font-mono font-bold text-emerald-800">{mk.kode}</td>
+                    <td className="p-3.5 font-mono font-bold text-blue-800">{mk.kode}</td>
                     <td className="p-3.5 font-bold text-gray-900">{mk.nama}</td>
                     <td className="p-3.5 text-gray-700">{mk.kelompok}</td>
                     <td className="p-3.5 text-center font-bold">{mk.semester}</td>
                     <td className="p-3.5 text-center">{mk.sksTeori}</td>
                     <td className="p-3.5 text-center">{mk.sksPraktik}</td>
-                    <td className="p-3.5 text-center font-bold text-emerald-700">{mk.totalSks}</td>
+                    <td className="p-3.5 text-center font-bold text-blue-700">{mk.totalSks}</td>
                     <td className="p-3.5 text-center">
                       <button
                         onClick={() =>
@@ -298,13 +356,6 @@ export const EntriKomponenView: React.FC<EntriKomponenViewProps> = ({
               </tbody>
             </table>
           </div>
-        </div>
-      )}
-
-      {tab !== 'po' && tab !== 'mk' && (
-        <div className="bg-white p-8 rounded-2xl border border-gray-200 text-center space-y-3">
-          <h3 className="font-bold text-gray-800 text-lg">Modul {tab.toUpperCase()} Aktif</h3>
-          <p className="text-xs text-gray-600">Gunakan fitur AI Copilot atau entri manual untuk melengkapi komponen kurikulum Anda.</p>
         </div>
       )}
 

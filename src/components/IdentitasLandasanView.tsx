@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CurriculumData, Prodi } from '../types';
 import { Sparkles, Save, BookOpen, Scale, Compass, Building2 } from 'lucide-react';
 import { AiAssistantModal } from './AiAssistantModal';
@@ -16,9 +16,16 @@ export const IdentitasLandasanView: React.FC<IdentitasLandasanViewProps> = ({
   activeProdi,
   activeSubTab = 'identitas',
 }) => {
-  const [tab, setTab] = useState<'identitas' | 'landasan' | 'vmt'>(
+  const [tab, setTab] = useState<string>(
     activeSubTab === 'landasan_kurikulum' ? 'landasan' : activeSubTab === 'vmt_upps' ? 'vmt' : 'identitas'
   );
+
+  useEffect(() => {
+    if (activeSubTab === 'landasan_kurikulum') setTab('landasan');
+    else if (activeSubTab === 'vmt_upps') setTab('vmt');
+    else if (activeSubTab === 'identitas_prodi') setTab('identitas');
+  }, [activeSubTab]);
+
   const [aiModalOpen, setAiModalOpen] = useState(false);
   const [aiPrompt, setAiPrompt] = useState('');
   const [aiTarget, setAiTarget] = useState<'dasarPemikiran' | 'visiProdi'>('dasarPemikiran');
@@ -36,7 +43,7 @@ export const IdentitasLandasanView: React.FC<IdentitasLandasanViewProps> = ({
           <button
             onClick={() => setTab('identitas')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-              tab === 'identitas' ? 'bg-emerald-700 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              tab === 'identitas' ? 'bg-blue-800 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             <Building2 className="w-4 h-4" />
@@ -45,7 +52,7 @@ export const IdentitasLandasanView: React.FC<IdentitasLandasanViewProps> = ({
           <button
             onClick={() => setTab('landasan')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-              tab === 'landasan' ? 'bg-emerald-700 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              tab === 'landasan' ? 'bg-blue-800 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             <Scale className="w-4 h-4" />
@@ -54,7 +61,7 @@ export const IdentitasLandasanView: React.FC<IdentitasLandasanViewProps> = ({
           <button
             onClick={() => setTab('vmt')}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
-              tab === 'vmt' ? 'bg-emerald-700 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              tab === 'vmt' ? 'bg-blue-800 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             <Compass className="w-4 h-4" />
@@ -64,7 +71,7 @@ export const IdentitasLandasanView: React.FC<IdentitasLandasanViewProps> = ({
 
         <button
           onClick={handleSave}
-          className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-2"
+          className="px-5 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-2"
         >
           <Save className="w-4 h-4" />
           <span>Simpan Perubahan</span>
@@ -113,9 +120,7 @@ export const IdentitasLandasanView: React.FC<IdentitasLandasanViewProps> = ({
               <input
                 type="text"
                 value={activeProdi.kaprodi}
-                onChange={(e) => {
-                  /* handle Kaprodi edit */
-                }}
+                onChange={(e) => {}}
                 className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm text-gray-900"
               />
             </div>
@@ -133,7 +138,7 @@ export const IdentitasLandasanView: React.FC<IdentitasLandasanViewProps> = ({
                 setAiPrompt(`Buatkan narasi dasar pemikiran pengembangan kurikulum berbasis OBE untuk Program Studi ${activeProdi.nama} Fakultas ${activeProdi.fakultas} Universitas Pattimura yang menekankan keunggulan kawasan kepulauan.`);
                 setAiModalOpen(true);
               }}
-              className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-medium flex items-center gap-1.5 shadow-xs"
+              className="px-3 py-1.5 bg-blue-800 hover:bg-blue-900 text-white rounded-xl text-xs font-medium flex items-center gap-1.5 shadow-xs"
             >
               <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
               <span>Tanya AI untuk Dasar Pemikiran</span>
@@ -149,16 +154,16 @@ export const IdentitasLandasanView: React.FC<IdentitasLandasanViewProps> = ({
                 landasan: { ...curriculum.landasan, dasarPemikiran: e.target.value },
               })
             }
-            className="w-full p-4 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+            className="w-full p-4 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
           />
 
           <div>
             <h4 className="font-bold text-gray-900 text-sm mb-2">Landasan Yuridis (Undang-Undang & Permen)</h4>
             <div className="space-y-2">
               {curriculum.landasan.landasanYuridis.map((item, idx) => (
-                <div key={idx} className="p-3 bg-emerald-50/50 border border-emerald-200 rounded-xl text-xs text-gray-800 font-medium flex items-center justify-between">
+                <div key={idx} className="p-3 bg-blue-50/50 border border-blue-200 rounded-xl text-xs text-gray-800 font-medium flex items-center justify-between">
                   <span>{item}</span>
-                  <span className="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md">Aktif</span>
+                  <span className="text-[10px] bg-blue-200 text-blue-900 px-2 py-0.5 rounded-md">Aktif</span>
                 </div>
               ))}
             </div>
@@ -176,7 +181,7 @@ export const IdentitasLandasanView: React.FC<IdentitasLandasanViewProps> = ({
                 setAiPrompt(`Buatkan rumusan Visi dan Misi Program Studi ${activeProdi.nama} Fakultas ${activeProdi.fakultas} Universitas Pattimura yang berfokus pada keunggulan kepulauan.`);
                 setAiModalOpen(true);
               }}
-              className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-medium flex items-center gap-1.5 shadow-xs"
+              className="px-3 py-1.5 bg-blue-800 hover:bg-blue-900 text-white rounded-xl text-xs font-medium flex items-center gap-1.5 shadow-xs"
             >
               <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
               <span>Tanya AI VMT</span>
